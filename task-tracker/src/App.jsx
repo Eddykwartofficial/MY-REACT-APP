@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from 'react';
+import TaskList from './components/TaskList';
+import TaskForm from './components/TaskForm';
+import Snackbar from './components/Snackbar';
+import useTaskStore from './store/useTaskStore';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const initializeTasks = useTaskStore(state => state.initializeTasks);
+  
+  // Load saved tasks when app starts
+  useEffect(() => {
+    initializeTasks();
+  }, [initializeTasks]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen bg-gray-50 flex justify-center items-center p-4">
+      <div className="w-full max-w-md p-6 rounded-lg shadow-md bg-white">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-semibold text-gray-800">Task Tracker</h1>
+        </div>
+        <TaskForm />
+        <TaskList />
+        <Snackbar />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default App;
